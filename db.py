@@ -14,8 +14,8 @@ conn = sqlite3.connect('books.sqlite')
 #     charset='utfmb8',
 #     cursorclass=pymysql.cursors.DictCursos
 # )
-
 cursor = conn.cursor()
+
 sql_querry = """CREATE TABLE books (
     bookTitle text NOT NULL, 
     bookRating integer NOT NULL,
@@ -32,6 +32,7 @@ sql_querry = """CREATE TABLE books (
 )"""
 cursor.execute(sql_querry)
 # conn.close()
+
 
 
 # bookTitle

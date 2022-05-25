@@ -1,13 +1,32 @@
-from distutils.debug import DEBUG
-from pickle import TRUE
-from flask import Flask, request, jsonify
-from importlib_metadata import method_cache
+from functools import wraps
+from flask import Flask, make_response, request, jsonify
 import json
 import sqlite3
+import jwt
+import datetime
 # import pymysql
 # pakai %s daripada ?
 
 app = Flask(__name__)
+
+# validasi token untuk user login
+app.config['SECRET_KEY'] = "thisisthesecretkey"
+
+def tokenRequired(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token') #https://www.dasjdoenifes.com/route?token=dfjnewifnifnmemfllsenfioesnfesf
+        data = None
+        if not token:
+            return jsonify({'message' : 'Token is missing'}), 403
+        try:
+            data = jwt.decode(token, 'thisisthesecretkey', algorithms=['HS256'])
+        except:
+            return jsonify({'message' : 'Token {} is invalid!'.format(token)}), 403
+        return f(*args, **kwargs)
+
+    return decorated
+
 # Koneksi Database
 def db_connection():
     conn = None
@@ -17,10 +36,34 @@ def db_connection():
         print(e)
     return conn
 
+# Api testing saja bukan real api 
+@app.route('/protected')
+@tokenRequired
+def protected():
+    return jsonify({'message' : 'Only Available For people that have token'})
+    
+@app.route('/unprotected')
+def unprotected():
+    return jsonify({'message' : 'Anyone Can See This'})
 
 
+# API untuk Login User
+@app.route('/login', methods=['POST'])
+def login():
+    auth = request
+    if auth.form['password'] == 'password':
+    # if auth and auth.password == 'password':
+        token = jwt.encode({'user' : auth.form['username'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(hours=12)}, app.config['SECRET_KEY'])
+
+        return jsonify({'token' : token})
+        # return jsonify({'token' : token.decode('UTF-8')})
+
+    return make_response('Tidak dapat diverivikasi', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
+
+
+# API untuk melakukan querry buku berdasarkan nama buku
 @app.route('/book/<title>', methods=['GET'])
-def singleBook(title):
+def getSingleBook(title):
     conn = db_connection()
     cursor = conn.cursor()
     book = None
@@ -46,11 +89,6 @@ def singleBook(title):
         return jsonify(dictBook), 200
     else:
         return "Book Named {} Not Existing".format(title), 404
-
-
-
-
-
 
 
 
