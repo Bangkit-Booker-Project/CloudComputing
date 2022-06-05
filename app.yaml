@@ -1,0 +1,8 @@
+#app.yaml
+runtime: python37
+
+env_variables:
+  CLOUD_SQL_USERNAME: booker
+  CLOUD_SQL_PASSWORD: booker2022
+  CLOUD_SQL_DATABASE_NAME: bookerDB
+  CLOUD_SQL_CONNECTION_NAME: bangkit-booker-352402:asia-southeast2:bangkit-booker

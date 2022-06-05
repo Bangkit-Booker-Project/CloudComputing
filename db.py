@@ -1,5 +1,5 @@
-from copy import PyStringMap
-from email import charset
+# from copy import PyStringMap
+# from email import charset
 import sqlite3
 # import pymysql
 
@@ -19,16 +19,20 @@ cursor = conn.cursor()
 sql_querry = """CREATE TABLE books (
     bookTitle text NOT NULL, 
     bookRating integer NOT NULL,
-    ISBN text PRIMARY KEY,
+    ISBN varchar(20) PRIMARY KEY,
     bookAuthor text NOT NULL,
     yearOfPublication text NOT NULL,
     Publisher text NOT NULL,
     url text NOT NULL,
     bookImage text NOT NULL,
     bookDesc text NOT NULL,
-    ratingCount text,
+    ratingCount integer,
     bookPages text NOT NULL,
-    bookGenres text NOT NULL
+    bookGenres text NOT NULL,
+    bookGenre1 text NOT NULL,
+    bookGenre2 text NOT NULL,
+    bookGenre3 text NOT NULL
+
 )"""
 cursor.execute(sql_querry)
 # conn.close()
