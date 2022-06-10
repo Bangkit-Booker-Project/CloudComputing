@@ -1,4 +1,18 @@
-# Bangkit Booker
+html { scroll-behavior: smooth; }  BOOKER API Documentation     
+
+*   [Bangkit BOOKER](#booker "Dicoding Story")
+
+*   [Endpoint](#endpoint "Endpoint")
+
+*   [Register](#register "Register")
+*   [Login](#login "Login")
+*   [Reset Password](#resetPassword "Reset password")
+*   [Search Books by random input](#search "Search Books")
+*   [Find Book by Title](#findBook "Find Book")
+*   [Top Rating Book by Genre](#topRatings "Top Rating Book by Genre")
+*   [Similiar Book by Title](#similiarBooks "Similiar Book by Title")
+
+Bangkit Booker
 ==============
 
 > API untuk Book rekomendation based on user preferences
@@ -217,3 +231,6 @@
               }
               ...
         }
+    
+
+window.$docsify = { name: '', repo: '' }
