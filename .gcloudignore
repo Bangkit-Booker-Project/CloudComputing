@@ -18,3 +18,10 @@ __pycache__/
 # Ignored by the build system
 /setup.cfg
 /venv
+
+testing.py
+books.sqlite
+/my_model
+model.pkl
+book_dataset.csv
+.vscode
