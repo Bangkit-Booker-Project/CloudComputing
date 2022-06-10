@@ -6,11 +6,11 @@ html { scroll-behavior: smooth; }  BOOKER API Documentation
 
 *   [Register](#register "Register")
 *   [Login](#login "Login")
-*   [Reset Password](#resetPassword "Reset password")
-*   [Search Books by random input](#search "Search Books")
-*   [Find Book by Title](#findBook "Find Book")
-*   [Top Rating Book by Genre](#topRatings "Top Rating Book by Genre")
-*   [Similiar Book by Title](#similiarBooks "Similiar Book by Title")
+*   [Reset Password](#reset-password "Reset password")
+*   [Search Books by random input](#search-books-by-random-input "Search Books")
+*   [Find Book by Title](#find-books-by-title "Find Book")
+*   [Top Rating Book by Genre](#top-rating-book-by-genre "Top Rating Book by Genre")
+*   [Similiar Book by Title](#similiar-book-by-title "Similiar Book by Title")
 
 Bangkit Booker
 ==============
