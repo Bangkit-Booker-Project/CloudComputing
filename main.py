@@ -3,15 +3,22 @@ from flask import Flask, make_response, request, jsonify,render_template
 import jwt
 import datetime
 import db
-import os
 import hashlib
 import string    
 import random # define the random module 
+import tensorflow as tf
+
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app = Flask(__name__, static_folder="your path to static")
 
+
+model = None
+def load_model():
+    global model
+    model = tf.keras.models.load_model('my_model')
+    
 # validasi token untuk user login
 app.config['SECRET_KEY'] = "thisisthesecretkey"
 dataJWT = None
@@ -112,7 +119,66 @@ def similiarBooks(title):
         res["message"] = "Book Named {} Not Existing".format(title)
         return jsonify(res), 400
         
+@app.route('/recomendation', methods=['GET'])
+@tokenRequired
+def recomendation():
+    res = respon
+    uId = dataJWT["user"]
+    books = db.getRecomendationBooks(uId)
+    if books:
+        res["error"] = False
+        res["message"] = "Similiar books fetched successfully"
+        res['result'] = books
+        return jsonify(res), 200
+    else:
+        res["error"] = True
+        res["message"] = "No book recomendation for user {}".format(id)
+        return jsonify(res), 400
 
+# API untuk reset password
+@app.route('/updateReadBook', methods=['POST'])
+@tokenRequired
+def updateReadBook():
+    req = request
+    res = respon
+    # uEmail = auth.form['email']
+    uId = dataJWT["user"]
+    isbn = req.form['ISBN']
+    rating = req.form['bookRating']
+    # uName = auth.form['username']
+    userD = db.updateRatingsTable(uId,isbn,rating)
+
+    if userD:  
+        res["error"] = False
+        res["message"] ="Data Updated Succesfuly"
+        res['book recomendation'] = userD
+        return jsonify(res), 200
+    else:
+        res["error"] = True
+        res["message"] = "Failed to update, No book have ISBN {}".format(isbn)
+        return jsonify(res), 400
+    # return jsonify('berhasil')
+    
+@app.route('/updateGenre', methods=['POST'])
+@tokenRequired
+def updateGenre():
+    req = request
+    res = respon
+    uId = dataJWT["user"]
+    genre = req.form['genre']
+    userD = db.setGenre(uId,genre)
+
+    if userD:  
+        res["error"] = False
+        res["message"] ="Data Updated Succesfuly"
+        res['book recomendation'] = userD
+        return jsonify(res), 200
+    else:
+        res["error"] = True
+        res["message"] = "Failed to update, No book have Genre {}".format(genre)
+        return jsonify(res), 400
+
+    return
 # User activities
 # belum dideploy
 
@@ -135,21 +201,6 @@ def verifPw(dbPW,inputPW):
         return True
     else:
         return False
-
-# def encodePW(pw):
-#     salt = os.urandom(12)
-#     key = hashlib.pbkdf2_hmac('sha256', pw.encode('utf-8'), salt, 100000)
-#     encPW = salt+key
-#     return encPW
-
-# def verifPw(dbPW,inputPW):
-#     salt = dbPW[:12]
-#     key = dbPW[12:]
-#     encodedPW = hashlib.pbkdf2_hmac('sha256',inputPW.encode('utf-8'),salt, 100000)
-#     if key == encodedPW:
-#         return True
-#     else:
-#         return False
 
 # for register new user
 @app.route('/register', methods=['POST'])
@@ -185,10 +236,10 @@ def login():
     passwordD = userD['password']
     # print(passwordD)
     inPassword = auth.form['password']
-    pswd = verifPw(passwordD, inPassword)
+    pswd=True
+    pswd = verifPw(passwordD, inPassword) 
     # print(pswd)
     if pswd:
-    # if auth and auth.password == 'password':
         token = jwt.encode({'user' : userD['id'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(days=7)}, app.config['SECRET_KEY'])
         res['error'] = False
         res['message'] = "User login successfully"
@@ -230,6 +281,6 @@ def resetPassword():
 
 
 
-
 if __name__ == '__main__':
+    load_model()
     app.run(debug=True)

@@ -21,7 +21,8 @@ __pycache__/
 
 testing.py
 books.sqlite
-/my_model
 model.pkl
-book_dataset.csv
 .vscode
+req.txt
+coba.pkl
+baca.py

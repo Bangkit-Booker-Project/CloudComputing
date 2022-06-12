@@ -1,11 +1,9 @@
-# from copy import PyStringMap
-# from email import charset
-# from ast import Return
 import os
-from sqlite3 import connect
-import sqlite3
 import pymysql
 import pandas as pd
+import numpy as np
+import main
+
 
 
 db_user = os.environ.get('CLOUD_SQL_USERNAME')
@@ -18,32 +16,18 @@ def db_connection():
     unix_socket = '/cloudsql/{}'.format(db_connection_name)
     conn = None
     try:
-        if os.environ.get('GAE_ENV') == 'standard':
-            conn = pymysql.connect( #host=db_host,
-                                    user=db_user,
-                                    password=db_password,
-                                    unix_socket=unix_socket,
-                                    db=db_name,
-                                    charset='utf8',
-                                    cursorclass=pymysql.cursors.DictCursor
-                                    )
+        # if os.environ.get('GAE_ENV') == 'standard':
+        conn = pymysql.connect( #host=db_host,
+                                user=db_user,
+                                password=db_password,
+                                unix_socket=unix_socket,
+                                db=db_name,
+                                charset='utf8',
+                                cursorclass=pymysql.cursors.DictCursor
+                                )
     except pymysql.MySQLError as e:
         return e
     return conn
-
-
-
-# untuk konek ke cloud mysql
-# conn = pymysql.connect(
-#     host='omfofineofne.sdaeojeaf.com',
-#     database='bookpred',
-#     user='wdioioawmd',
-#     password='cscnsneo',
-#     charset='utfmb8',
-#     cursorclass=pymysql.cursors.DictCursos
-# )
-# conn = db_connection()
-# cursor = conn.cursor()
 
 # Get One Book
 def getOneBook(title):
@@ -122,7 +106,6 @@ def searchRandomTitle(title):
     book = None
     # querry ="SELECT * FROM books WHERE bookTitle OR bookAuthor OR Publisher LIKE CONCAT('%%', %s, '%%')"
     querry ="SELECT * FROM books WHERE bookTitle LIKE CONCAT('%%', %s, '%%') OR bookAuthor LIKE CONCAT('%%', %s, '%%') OR Publisher LIKE CONCAT('%%', %s, '%%')"
-
     try :
         cursor.execute(querry, (title,title,title))
         rows = cursor.fetchall()
@@ -154,7 +137,7 @@ def searchRandomTitle(title):
 # Rekomendasi Buku
 cosine_sim_df = pd.read_csv('cosine.csv')
 cosine_sim_df = cosine_sim_df.drop(cosine_sim_df.columns[0], axis=1)
-def books_recommendations(bookTitle, similarity_data=cosine_sim_df, k=10):
+def cosineSim(bookTitle, similarity_data=cosine_sim_df, k=10):
     index = similarity_data.loc[:,bookTitle].to_numpy().argpartition(
         range(-1, -k, -1))
     
@@ -168,7 +151,7 @@ def books_recommendations(bookTitle, similarity_data=cosine_sim_df, k=10):
 
 def similiarBooks(title):
     try:
-        result = books_recommendations(title)
+        result = cosineSim(title)
     except:
         return False
     sim=[]
@@ -183,58 +166,76 @@ def similiarBooks(title):
     return sim
 
 
+# model = tf.keras.models.load_model('my_model')
+book_data = pd.read_csv('book_dataset.csv')
 
-#====================================================================================================================#
+def booksRecomendation(uID):
+    conn = db_connection()
+    cursor = conn.cursor()
+    bukuRaw= "SELECT bookID FROM ratingDataset WHERE userID=%s"
+    print(bukuRaw)
+    cursor.execute(bukuRaw,(uID,))
+    bukuRaw = cursor.fetchall()
+    books_have_been_read_by_user = []
+    for r in bukuRaw:
+        x = r['bookID']
+        books_have_been_read_by_user.append(x)
+    books_have_been_read_by_user = pd.DataFrame(books_have_been_read_by_user)
+    books_have_not_been_read_by_user = book_data[~book_data['books'].isin(books_have_been_read_by_user[0].values)]['books']
 
+    ISBN_encoder = book_data.books.iloc[0:]
 
+    # List data ISBN yang telah diencode pada buku yang dibelum dibaca user
+    book_list = [[ISBN_encoder.get(x)] for x in books_have_not_been_read_by_user ]
 
-# sql_querry = """CREATE TABLE books (
-#     bookTitle text NOT NULL, 
-#     bookRating float NOT NULL,
-#     ISBN varchar(20) PRIMARY KEY,
-#     bookAuthor text NOT NULL,
-#     yearOfPublication text NOT NULL,
-#     Publisher text NOT NULL,
-#     url text NOT NULL,
-#     bookImage text NOT NULL,
-#     bookDesc text NOT NULL,
-#     ratingCount integer,
-#     bookPages text NOT NULL,
-#     bookGenres text NOT NULL,
-#     bookGenre1 text NOT NULL,
-#     bookGenre2 text NOT NULL,
-#     bookGenre3 text NOT NULL
-# )"""
-
-
-
-# conn.close()
-
-
-
-# bookTitle
-# bookRating
-# ISBN
-# bookAuthor
-# yearOfPublication
-# Publisher
-# url
-# bookImage
-# bookDesc
-# ratingCount
-# bookPages
-# bookGenres
-
-# konek = sqlite3.connect('books.sqlite')
+    user_book_array = np.hstack(([[uID]] * len(book_list), book_list))
+    ratings = main.model.predict(user_book_array).flatten()
+    # Menentukan top rating buku
+    top_ratings_indices = ratings.argsort()[-50:][::-1]
+    # Mengambil data ISBN 
+    ISBN = book_data.ISBN.iloc[0:]
+    # List data ISBN pada top rating buku
+    recommended_book_ids  = [ISBN.get(book_list[x][0]) for x in top_ratings_indices]
+    recommended_books = book_data[book_data['ISBN'].isin(recommended_book_ids)]['bookTitle']
+    
+    return recommended_books
 
 
-# def dbKonek():
-#     con = None
-#     try:
-#         con = sqlite3.connect('books.sqlite')
-#     except sqlite3.error as e:
-#         print(e)
-#     return con
+def getRecomendationBooks(uId):
+    try:
+        result = booksRecomendation(uId)
+    except:
+        return False
+    hasilRekomendasi=[]  
+    buku = None
+    for x in result:
+        buku = getOneBook(x)
+        hasilRekomendasi.append(buku)
+    return hasilRekomendasi
+
+def getbuk(ISBN):
+    getBook = book_data[book_data.ISBN.isin([ISBN])]['books']
+    getBook = getBook.iloc[0]
+    return getBook
+
+def updateRatingsTable(userId,ISBN,bookRating):
+    conn = db_connection()
+    cursor = conn.cursor()
+    sql_Querry = ("INSERT INTO ratingDataset (userID,bookID,bookRating) VALUES (%s, %s, %s)")
+
+    # user = []
+    try :
+        ISBN = getbuk(ISBN)
+        cursor.execute(sql_Querry,(userId,ISBN,bookRating))
+        conn.commit()
+        buku = getRecomendationBooks(userId)
+        # for r in rows:
+        #     user = r
+        return buku
+    except:
+        # print(e)
+        return False
+
 
 def regsisterUser(email,password, username):
     # konek = dbKonek()
@@ -262,7 +263,7 @@ def loginUser(email):
     cursor = conn.cursor()
     # konek =dbKonek()
     # kursor = konek.cursor()
-    sql_Querry = "SELECT * FROM users WHERE email=%s"
+    sql_Querry = "SELECT * FROM users WHERE email= %s"
     user = False
     try :
         cursor.execute(sql_Querry,(email,))
@@ -289,61 +290,4 @@ def resetPassword(uid,pwd):
         return True
     except:
         return False
-
-
-# sql_querry = ''
-# cursor.execute(sql_querry)
-# CREATE TABLE users (
-#     id        INTEGER    PRIMARY KEY AUTO_INCREMENT
-#                          UNIQUE
-#                          NOT NULL,
-#     email     CHAR (255) NOT NULL
-#                          UNIQUE,
-#     password  CHAR (255) NOT NULL,
-#     username  CHAR (255) NOT NULL,
-#     genres TEXT
-# );
-
-
-# INSERT INTO users (email,password,username) VALUES ('admin','admin','admin')
-# UPDATE users SET ratedBook ='[classics]' WHERE id=1
-# SELECT * FROM users WHERE email='admin'
-
-
-
-# https://nitratine.net/blog/post/how-to-hash-passwords-in-python/
-
-
-
-
-
-# rekomendasi 50 buku untuk user
-
-# book_data = pd.read_csv('book_dataset.csv')
-
-# # Mengubah book_ids menjadi list tanpa nilai yang sama
-# books_ids = book_data['ISBN'].unique().tolist()
- 
-# # Melakukan proses encoding book_ids
-# book_to_book_encoded = {x: i for i, x in enumerate(books_ids)}
- 
-# # Melakukan proses encoding angka ke book_ids
-# book_encoded_to_book = {i: x for i, x in enumerate(books_ids)}
-
-def bookRecomendation(uID):
-
-    # ngambil user id
-    user_id=uID
-    books_have_been_read_by_user= "SELECT * FROM users WHERE id=%s"
-    ISBN = "SELECT bookID FROM books"
-    books_have_not_been_read_by_user = ISBN[~ISBN['bookID'].isin(books_have_been_read_by_user['bookID'].values)]
-    
-    # List data ISBN yang telah diencode pada buku yang dibelum dibaca user
-    book_list = [[ISBN.get(x)] for x in books_have_not_been_read_by_user]
-    return book_list
-    
-    
-
-
-
 
