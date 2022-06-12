@@ -1,5 +1,3 @@
-html { scroll-behavior: smooth; }  BOOKER API Documentation     
-
 *   [Bangkit BOOKER](#booker "Dicoding Story")
 
 *   [Endpoint](#endpoint "Endpoint")

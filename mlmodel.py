@@ -16,13 +16,6 @@ def get_session():
         ONNX_SESSION = sess
     return ONNX_SESSION
     
-# def dbKonek():
-#     con = None
-#     try:
-#         con = sqlite3.connect('books.sqlite')
-#     except sqlite3.error as e:
-#         print(e)
-#     return con
 
 book_data = pd.read_csv('book_dataset.csv')
 
@@ -38,9 +31,6 @@ def predict(uId):
     books_have_been_read_by_user = []
 
     for r in bukuRaw:
-        # r=str(r)
-        # x = re.findall('[0-9]+', r)
-        # x[0] = int(x[0])
         x = r['bookID']
         books_have_been_read_by_user.append(x)
         # books_have_been_read_by_user.append(x[0])
@@ -76,7 +66,3 @@ def predict(uId):
     # Menentukan buku yang direkomendasikan untuk user
     recommended_books = book_data[book_data['ISBN'].isin(recommended_book_ids)]['bookTitle']
     return recommended_books
-
-# buku = predict(0)
-# for i in 
-# print(buku[0])

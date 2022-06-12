@@ -265,7 +265,6 @@ def getRatedBooks(uID):
     cursor = conn.cursor()
     bukuRaw= "SELECT * FROM ratingDataset WHERE userID=%s ORDER BY bookRating DESC"
     # print(bukuRaw)
-    
     bukus = []
     bukuIns = None
     try :
@@ -282,21 +281,6 @@ def getRatedBooks(uID):
         title = book_data[book_data.ISBN.isin([ISBN])]['bookTitle']
         # getDbuku = book_data[book_data.ISBN.isin([ISBNr])][['bookTitle'','ISBN','url','bookAuthor','yearOfPublication','bookImage','bookPages','Publisher','bookDesc','bookGenre1','bookGenre2','bookGenre3']]'
         title = title.iloc[0]
-        # dictBook = {
-        #     "bookTitle" : book[0],
-        #     "userBookRating" : bukuIns['bookRating'],
-        #     "ISBN" : book[1],
-        #     "url" : book[2],
-        #     "bookAuthor" : book[3],
-        #     "yearOfPublication" : book[4],
-        #     "bookImage" : book[5],
-        #     "bookPages" : book[6],
-        #     "Publisher" : book[7],
-        #     "bookDesc" : book[8],
-        #     "bookGenre1" : book[9],
-        #     "bookGenre2" : book[10],
-        #     "bookGenre3" : book[11]
-        # }
         dictBook = getOneBook(title)
         dictBook['userRating']=userRating
         bukus.append(dictBook)
