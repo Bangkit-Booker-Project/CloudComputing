@@ -12,6 +12,9 @@ db_name =  os.environ.get('CLOUD_SQL_DATABASE_NAME')
 db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 db_host = os.environ.get('CLOUD_SQL_HOST_NAME')
 
+# model = tf.keras.models.load_model('my_model')
+book_data = pd.read_csv('book_dataset.csv')
+
 def db_connection():
     unix_socket = '/cloudsql/{}'.format(db_connection_name)
     conn = None
@@ -166,8 +169,7 @@ def similiarBooks(title):
     return sim
 
 
-# model = tf.keras.models.load_model('my_model')
-book_data = pd.read_csv('book_dataset.csv')
+
 
 def booksRecomendation(uID):
     conn = db_connection()
@@ -249,7 +251,7 @@ def getRatedBooks(uID):
     # print(bukuRaw)
     
     bukus = []
-    book = None
+    bukuIns = None
     try :
         cursor.execute(bukuRaw,(uID,))
         ratedData = cursor.fetchall()
@@ -257,13 +259,28 @@ def getRatedBooks(uID):
          return False
 
     for r in ratedData:
-        book = r
-        ISBN = book['bookID']
-        ISBN = getISBN(ISBN)
-        dictBook = {
-            "ISBN" : ISBN,
-            "bookRating" : book['bookRating']
-            }
+        bukuIns = r
+        ISBN = bukuIns['bookID']
+        ISBNr = getISBN(ISBN)
+        title = book_data[book_data.ISBN.isin([ISBNr])]['bookTitle']
+        # getDbuku = book_data[book_data.ISBN.isin([ISBNr])][['bookTitle'','ISBN','url','bookAuthor','yearOfPublication','bookImage','bookPages','Publisher','bookDesc','bookGenre1','bookGenre2','bookGenre3']]'
+        title = title.iloc[0][0]
+        # dictBook = {
+        #     "bookTitle" : book[0],
+        #     "userBookRating" : bukuIns['bookRating'],
+        #     "ISBN" : book[1],
+        #     "url" : book[2],
+        #     "bookAuthor" : book[3],
+        #     "yearOfPublication" : book[4],
+        #     "bookImage" : book[5],
+        #     "bookPages" : book[6],
+        #     "Publisher" : book[7],
+        #     "bookDesc" : book[8],
+        #     "bookGenre1" : book[9],
+        #     "bookGenre2" : book[10],
+        #     "bookGenre3" : book[11]
+        # }
+        dictBook = getOneBook(title)
         bukus.append(dictBook)
     return bukus
 
@@ -321,3 +338,35 @@ def resetPassword(uid,pwd):
     except:
         return False
 
+def rekomendasiDummy():
+    conn = db_connection()
+    cursor = conn.cursor()
+    book = None
+    # with conn.cursor() as cursor:
+    try:
+        cursor.execute("select * from books ORDER BY RAND( ) limit 40")
+        rows = cursor.fetchall()
+    except pymysql.MySQLError as e:
+        return False
+    bookObj = []
+    for r in rows:
+        book = r
+        dictBook = {
+            "bookTitle" : book['bookTitle'],
+            "bookRating" : book['bookRating'],
+            "ISBN" : book['ISBN'],
+            "bookAuthor" : book['bookAuthor'],
+            "yearOfPublication" : book['yearOfPublication'],
+            "Publisher" : book['Publisher'],
+            "url" : book['url'],
+            "bookImage" : book['bookImage'],
+            "bookDesc" : book['bookDesc'],
+            "ratingCount" : book['ratingCount'],
+            "bookPages" : book['bookPages'],
+            "bookGenres" : book['bookGenres'],
+            "bookGenre1" : book['bookGenre1'],
+            "bookGenre2" : book['bookGenre2'],
+            "bookGenre3" : book['bookGenre3']
+        }
+        bookObj.append(dictBook)
+    return bookObj

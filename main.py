@@ -124,10 +124,11 @@ def similiarBooks(title):
 def recomendation():
     res = respon
     uId = dataJWT["user"]
-    books = db.getRecomendationBooks(uId)
+    # books = db.getRecomendationBooks(uId)
+    books = db.rekomendasiDummy()
     if books:
         res["error"] = False
-        res["message"] = "Similiar books fetched successfully"
+        res["message"] = "Recomendation books fetched successfully"
         res['result'] = books
         return jsonify(res), 200
     else:
@@ -135,7 +136,8 @@ def recomendation():
         res["message"] = "No book recomendation for user {}".format(id)
         return jsonify(res), 400
 
-@app.route('/getRatedBooks', methods=['GET'])
+
+@app.route('/getReadedBooks', methods=['GET'])
 @tokenRequired
 def getReadBooks():
     res = respon
@@ -143,7 +145,7 @@ def getReadBooks():
     books = db.getRatedBooks(uId)
     if books:
         res["error"] = False
-        res["message"] = "Similiar books fetched successfully"
+        res["message"] = "Books fetched successfully"
         res['result'] = books
         return jsonify(res), 200
     else:
@@ -152,7 +154,7 @@ def getReadBooks():
         return jsonify(res), 400
 
 # API untuk reset password
-@app.route('/updateReadBook', methods=['POST'])
+@app.route('/updateReadedBook', methods=['POST'])
 @tokenRequired
 def updateReadBook():
     req = request
