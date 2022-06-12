@@ -2,7 +2,8 @@ import os
 import pymysql
 import pandas as pd
 import numpy as np
-import main
+# import main
+import mlmodel as ml
 
 
 
@@ -171,41 +172,41 @@ def similiarBooks(title):
 
 
 
-def booksRecomendation(uID):
-    conn = db_connection()
-    cursor = conn.cursor()
-    bukuRaw= "SELECT bookID FROM ratingDataset WHERE userID=%s"
-    # print(bukuRaw)
-    cursor.execute(bukuRaw,(uID,))
-    bukuRaw = cursor.fetchall()
-    books_have_been_read_by_user = []
-    for r in bukuRaw:
-        x = r['bookID']
-        books_have_been_read_by_user.append(x)
-    books_have_been_read_by_user = pd.DataFrame(books_have_been_read_by_user)
-    books_have_not_been_read_by_user = book_data[~book_data['books'].isin(books_have_been_read_by_user[0].values)]['books']
+# def booksRecomendation(uID):
+#     conn = db_connection()
+#     cursor = conn.cursor()
+#     bukuRaw= "SELECT bookID FROM ratingDataset WHERE userID=%s"
+#     # print(bukuRaw)
+#     cursor.execute(bukuRaw,(uID,))
+#     bukuRaw = cursor.fetchall()
+#     books_have_been_read_by_user = []
+#     for r in bukuRaw:
+#         x = r['bookID']
+#         books_have_been_read_by_user.append(x)
+#     books_have_been_read_by_user = pd.DataFrame(books_have_been_read_by_user)
+#     books_have_not_been_read_by_user = book_data[~book_data['books'].isin(books_have_been_read_by_user[0].values)]['books']
 
-    ISBN_encoder = book_data.books.iloc[0:]
+#     ISBN_encoder = book_data.books.iloc[0:]
 
-    # List data ISBN yang telah diencode pada buku yang dibelum dibaca user
-    book_list = [[ISBN_encoder.get(x)] for x in books_have_not_been_read_by_user ]
+#     # List data ISBN yang telah diencode pada buku yang dibelum dibaca user
+#     book_list = [[ISBN_encoder.get(x)] for x in books_have_not_been_read_by_user ]
 
-    user_book_array = np.hstack(([[uID]] * len(book_list), book_list))
-    ratings = main.model.predict(user_book_array).flatten()
-    # Menentukan top rating buku
-    top_ratings_indices = ratings.argsort()[-50:][::-1]
-    # Mengambil data ISBN 
-    ISBN = book_data.ISBN.iloc[0:]
-    # List data ISBN pada top rating buku
-    recommended_book_ids  = [ISBN.get(book_list[x][0]) for x in top_ratings_indices]
-    recommended_books = book_data[book_data['ISBN'].isin(recommended_book_ids)]['bookTitle']
+#     user_book_array = np.hstack(([[uID]] * len(book_list), book_list))
+#     ratings = main.model.predict(user_book_array).flatten()
+#     # Menentukan top rating buku
+#     top_ratings_indices = ratings.argsort()[-50:][::-1]
+#     # Mengambil data ISBN 
+#     ISBN = book_data.ISBN.iloc[0:]
+#     # List data ISBN pada top rating buku
+#     recommended_book_ids  = [ISBN.get(book_list[x][0]) for x in top_ratings_indices]
+#     recommended_books = book_data[book_data['ISBN'].isin(recommended_book_ids)]['bookTitle']
     
-    return recommended_books
+#     return recommended_books
 
-
+# prediksi model
 def getRecomendationBooks(uId):
     try:
-        result = booksRecomendation(uId)
+        result = ml.predict(uId)
     except:
         return False
     hasilRekomendasi=[]  
@@ -225,29 +226,44 @@ def getISBN(books):
     getISBN = getISBN.iloc[0]
     return getISBN
 
+def cekIsiRating(userId,ISBN):
+    conn = db_connection()
+    cursor = conn.cursor()
+    selectQuery = ("SELECT * FROM ratingDataset WHERE userID=%s AND bookID=%s")
+    try:
+        cursor.execute(selectQuery,(userId,ISBN))
+        buku = cursor.fetchall()
+        return True
+    except:
+        return False
+
 def updateRatingsTable(userId,ISBN,bookRating):
     conn = db_connection()
     cursor = conn.cursor()
-    sql_Querry = ("INSERT INTO ratingDataset (userID,bookID,bookRating) VALUES (%s, %s, %s)")
-
+    
+    updateQuery = ("UPDATE ratingDataset SET bookRating=%s WHERE userID=%s AND bookID=%s")
+    insertQuery = ("INSERT INTO ratingDataset (userID,bookID,bookRating) VALUES (%s, %s, %s)")
+    ISBN = getbuk(ISBN)
     # user = []
-    try :
-        ISBN = getbuk(ISBN)
-        cursor.execute(sql_Querry,(userId,ISBN,bookRating))
+    if cekIsiRating(userId,ISBN):
+        cursor.execute(updateQuery,(bookRating,userId,ISBN))
         conn.commit()
         buku = getRatedBooks(userId)
         # buku = getRecomendationBooks(userId)
         # for r in rows:
         #     user = r
         return buku
-    except:
+    else:
         # print(e)
-        return False
+        cursor.execute(insertQuery,(userId,ISBN,bookRating))
+        conn.commit()
+        buku = getRatedBooks(userId)
+        return buku
 
 def getRatedBooks(uID):
     conn = db_connection()
     cursor = conn.cursor()
-    bukuRaw= "SELECT * FROM ratingDataset WHERE userID=%s"
+    bukuRaw= "SELECT * FROM ratingDataset WHERE userID=%s ORDER BY bookRating DESC"
     # print(bukuRaw)
     
     bukus = []

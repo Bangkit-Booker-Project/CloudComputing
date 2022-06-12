@@ -124,8 +124,8 @@ def similiarBooks(title):
 def recomendation():
     res = respon
     uId = dataJWT["user"]
-    # books = db.getRecomendationBooks(uId)
-    books = db.rekomendasiDummy()
+    books = db.getRecomendationBooks(uId)
+    # books = db.rekomendasiDummy()
     if books:
         res["error"] = False
         res["message"] = "Recomendation books fetched successfully"

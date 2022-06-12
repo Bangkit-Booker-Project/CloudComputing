@@ -17,319 +17,455 @@
       <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='vue.css') }}"> -->
    </head>
    <body data-page="README.md" class="ready sticky">
-      <main>
-         <button class="sidebar-toggle" aria-label="Menu">
-            <div class="sidebar-toggle-button"><span></span><span></span><span></span></div>
-         </button>
-         <aside class="sidebar">
-            <div class="sidebar-nav">
-               <ul>
-                  <li><a class="section-link" href="#booker" title="Dicoding Story">Bangkit BOOKER</a></li>
-                  <ul>  
-                     <li><a class="section-link" href="#endpoint" title="Endpoint">Endpoint</a></li>
-                     <ul>
-                        <li><a class="section-link" href="#register" title="Register">Register</a></li>
-                        <li><a class="section-link" href="#login" title="Login">Login</a></li>
-                        <li><a class="section-link" href="#resetPassword" title="Reset password">Reset Password</a></li>
-                        <li><a class="section-link" href="#search" title="Search Books">Search Books by random input</a></li>
-                        <li><a class="section-link" href="#findBook" title="Find Book">Find Book by Title</a></li>
-                        <li><a class="section-link" href="#topRatings" title="Top Rating Book by Genre">Top Rating Book by Genre</a></li>
-                        <li><a class="section-link" href="#similiarBooks" title="Similiar Book by Title">Similiar Book by Title</a></li>                        
-                     </ul>
-                  </ul>
-               </ul>
-            </div>
-         </aside>
-         <section class="content">
-            <article class="markdown-section" id="main">
-               <h1 id="booker"><span>Bangkit Booker</span></a></h1>
-               <blockquote>
-                  <p>API untuk Book rekomendation based on user preferences</p>
-               </blockquote>
-               <h2 id="endpoint"><a href="#endpoint" data-id="endpoint" class="anchor"><span>Endpoint</span></a></h2>
-               <p><a href="https://bangkit-booker-352402.et.r.appspot.com/" target="_blank" rel="noopener">https://bangkit-booker-352402.et.r.appspot.com</a></p>
-               <h3 id="register"><span>Register</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/register</code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>POST</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Request Body
-                     <ul>
-                        <li><code>username</code> as <code>string</code></li>
-                        <li><code>email</code> as <code>string</code>, must be unique</li>
-                        <li><code>password</code> as <code>string</code>, must be at least 6 characters</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "User Created Successfully"
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="login"><span>Login</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/login</code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>POST</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Request Body
-                     <ul>
-                        <li><code>email</code> as <code>string</code></li>
-                        <li><code>password</code> as <code>string</code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "User login successfully",
-  "result": {
-      "email": "admin",
-      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0NTY2MTB9.nfsZEjaXxPt4g0eeRHtA3zyR8XQzxamROgcUySP9S3I",
-      "uid": 2,
-      "username": "admin"
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="resetPassword"><span>Reset Password</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/resetPassword</code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>POST</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Request Body
-                     <ul>
-                        <li><code>password</code> as <code>string</code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Parameter
-                     <ul>
-                        <li><code>token</code> as <code>string</code></li>
-                     </ul>
-                    <ul>
-                     <li>Example</li> 
-                     <pre v-pre="" data-lang="json"><code class="lang-json">https://bangkit-booker-352402.et.r.appspot.com/resetPassword?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U</code></pre></ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "Password Changed"
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="search"><span>Search Books by random input</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/search/[randomString] </code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>GET</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "Books fetched successfully",
-  "result":[
+     <p>html { scroll-behavior: smooth; }  BOOKER API Documentation     </p>
+<ul>
+<li><p><a href="#booker" title="Dicoding Story">Bangkit BOOKER</a></p>
+</li>
+<li><p><a href="#endpoint" title="Endpoint">Endpoint</a></p>
+</li>
+<li><p><a href="#register" title="Register">Register</a></p>
+</li>
+<li><a href="#login" title="Login">Login</a></li>
+<li><a href="#reset-password" title="Reset password">Reset Password</a></li>
+<li><a href="#search-books-by-random-input" title="Search Books">Search Books by random input</a></li>
+<li><a href="#find-books-by-title" title="Find Book">Find Book by Title</a></li>
+<li><a href="#top-rating-book-by-genre" title="Top Rating Book by Genre">Top Rating Book by Genre</a></li>
+<li><a href="#similiar-book-by-title" title="Similiar Book by Title">Similiar Book by Title</a></li>
+</ul>
+<h1 id="bangkit-booker">Bangkit Booker</h1>
+<blockquote>
+<p>API untuk Book rekomendation based on user preferences</p>
+</blockquote>
+<h2 id="-endpoint-endpoint-"><a href="#endpoint">Endpoint</a></h2>
+<p><a href="https://bangkit-booker-352402.et.r.appspot.com/">https://bangkit-booker-352402.et.r.appspot.com</a></p>
+<h3 id="register">Register</h3>
+<ul>
+<li>URL<ul>
+<li><code>/register</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>Request Body<ul>
+<li><code>username</code> as <code>string</code></li>
+<li><code>email</code> as <code>string</code>, must be unique</li>
+<li><code>password</code> as <code>string</code>, must be at least 6 characters</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User Created Successfully"</span>
+}
+</code></pre></li>
+</ul>
+<h3 id="login">Login</h3>
+<ul>
+<li>URL<ul>
+<li><code>/login</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>Request Body<ul>
+<li><code>email</code> as <code>string</code></li>
+<li><code>password</code> as <code>string</code></li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User login successfully"</span>,
+  <span class="hljs-attr">"result"</span>: {
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"admin"</span>,
+      <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0NTY2MTB9.nfsZEjaXxPt4g0eeRHtA3zyR8XQzxamROgcUySP9S3I"</span>,
+      <span class="hljs-attr">"uid"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-attr">"username"</span>: <span class="hljs-string">"admin"</span>
+}
+</code></pre></li>
+</ul>
+<h3 id="reset-password">Reset Password</h3>
+<ul>
+<li>URL<ul>
+<li><code>/resetPassword</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>Request Body<ul>
+<li><code>password</code> as <code>string</code></li>
+</ul>
+</li>
+<li><p>Parameter</p>
+<ul>
+<li><p><code>token</code> as <code>string</code></p>
+</li>
+<li><p>Example</p>
+<p><a href="https://bangkit-booker-352402.et.r.appspot.com/resetPassword?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U">https://bangkit-booker-352402.et.r.appspot.com/resetPassword?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U</a></p>
+</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Password Changed"</span>
+}
+</code></pre></li>
+</ul>
+<h3 id="search-books-by-random-input">Search Books by random input</h3>
+<ul>
+<li>URL<ul>
+<li><code>/search/[randomString]</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>,
+  <span class="hljs-attr">"result"</span>:[
       {
-          "ISBN": "345379632",
-          "Publisher": "Ballantine Books",
-          "bookAuthor": "Terry Brooks",
-          "bookDesc": "Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit...",
-          "bookGenre1": "Fantasy",
-          "bookGenre2": "Fantasy-UrbanFantasy",
-          "bookGenre3": "Fiction",
-          "bookGenres": "['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']",
-          "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg",
-          "bookPages": "386 pages",
-          "bookRating": 4.05,
-          "bookTitle": "A Knight of the Word",
-          "ratingCount": 14502,
-          "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
-          "yearOfPublication": "1998"
+          <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"345379632"</span>,
+          <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Ballantine Books"</span>,
+          <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Terry Brooks"</span>,
+          <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+          <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>,
+          <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"386 pages"</span>,
+          <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"A Knight of the Word"</span>,
+          <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
       },
       {
-        "ISBN": "380789019",
-        "Publisher": "Avon",
-        "bookAuthor": "Neil Gaiman",
-        "bookDesc": "Under the streets of London there's a place most people could never even dream of. A city of monsters and saints, murderers and angels, knights in armour and pale girls in black velvet. This is the city of the people who have fallen between the cracks.Richard Mayhew, a young businessman, is going to find out more than enough about this other London. A single act of kindness catapults him out of his workday existence and into a world that is at once eerily familiar and utterly bizarre. And a strange destiny awaits him down here, beneath his native city: Neverwhere.",
-        "bookGenre1": "Fantasy",
-        "bookGenre2": "Fiction",
-        "bookGenre3": "Fantasy-UrbanFantasy",
-        "bookGenres": "['Fantasy', 'Fiction', 'Fantasy-UrbanFantasy', 'Audiobook', 'ScienceFictionFantasy', 'ScienceFiction', 'Adventure', 'Horror', 'YoungAdult', 'Adult']",
-        "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348747943l/14497.jpg",
-        "bookPages": "370 pages",
-        "bookRating": 4.16,
-        "bookTitle": "Neverwhere",
-        "ratingCount": 450266,
-        "url": "https://www.goodreads.com/book/show/14497.Neverwhere",
-        "yearOfPublication": "1998"
-    }
+        <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"380789019"</span>,
+        <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Avon"</span>,
+        <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Neil Gaiman"</span>,
+        <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Under the streets of London there's a place most people could never even dream of. A city of monsters and saints, murderers and angels, knights in armour and pale girls in black velvet. This is the city of the people who have fallen between the cracks.Richard Mayhew, a young businessman, is going to find out more than enough about this other London. A single act of kindness catapults him out of his workday existence and into a world that is at once eerily familiar and utterly bizarre. And a strange destiny awaits him down here, beneath his native city: Neverwhere."</span>,
+        <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+        <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fiction"</span>,
+        <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+        <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fiction', 'Fantasy-UrbanFantasy', 'Audiobook', 'ScienceFictionFantasy', 'ScienceFiction', 'Adventure', 'Horror', 'YoungAdult', 'Adult']"</span>,
+        <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348747943l/14497.jpg"</span>,
+        <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"370 pages"</span>,
+        <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.16</span>,
+        <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"Neverwhere"</span>,
+        <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">450266</span>,
+        <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/14497.Neverwhere"</span>,
+        <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
+    },
+    ....sebanyak banyaknya....
   ]
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="findBook"><span>Find Books by Title</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/book/[Title] </code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>GET</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "Books fetched successfully",
-  "result":
+}
+</code></pre></li>
+</ul>
+<h3 id="find-books-by-title">Find Books by Title</h3>
+<ul>
+<li>URL<ul>
+<li><code>/book/[Title]</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-comment">"error"</span>: <span class="hljs-keyword">false</span>,
+  <span class="hljs-comment">"message"</span>: <span class="hljs-comment">"Books fetched successfully"</span>,
+  <span class="hljs-comment">"result"</span>:
       {
-          "ISBN": "345379632",
-          "Publisher": "Ballantine Books",
-          "bookAuthor": "Terry Brooks",
-          "bookDesc": "Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit...",
-          "bookGenre1": "Fantasy",
-          "bookGenre2": "Fantasy-UrbanFantasy",
-          "bookGenre3": "Fiction",
-          "bookGenres": "['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']",
-          "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg",
-          "bookPages": "386 pages",
-          "bookRating": 4.05,
-          "bookTitle": "A Knight of the Word",
-          "ratingCount": 14502,
-          "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
-          "yearOfPublication": "1998"
+          <span class="hljs-comment">"ISBN"</span>: <span class="hljs-comment">"345379632"</span>,
+          <span class="hljs-comment">"Publisher"</span>: <span class="hljs-comment">"Ballantine Books"</span>,
+          <span class="hljs-comment">"bookAuthor"</span>: <span class="hljs-comment">"Terry Brooks"</span>,
+          <span class="hljs-comment">"bookDesc"</span>: <span class="hljs-comment">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-comment">"bookGenre1"</span>: <span class="hljs-comment">"Fantasy"</span>,
+          <span class="hljs-comment">"bookGenre2"</span>: <span class="hljs-comment">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-comment">"bookGenre3"</span>: <span class="hljs-comment">"Fiction"</span>,
+          <span class="hljs-comment">"bookGenres"</span>: <span class="hljs-comment">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-comment">"bookImage"</span>: <span class="hljs-comment">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-comment">"bookPages"</span>: <span class="hljs-comment">"386 pages"</span>,
+          <span class="hljs-comment">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-comment">"bookTitle"</span>: <span class="hljs-comment">"A Knight of the Word"</span>,
+          <span class="hljs-comment">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-comment">"url"</span>: <span class="hljs-comment">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-comment">"yearOfPublication"</span>: <span class="hljs-comment">"1998"</span>
       }
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="topRatings"><span>Top Rating Book by Genre</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/topRatings/[Genre] </code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>GET</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "Books fetched successfully",
-  "result":
+}
+</code></pre></li>
+</ul>
+<h3 id="top-rating-book-by-genre">Top Rating Book by Genre</h3>
+<ul>
+<li>URL<ul>
+<li><code>/topRatings/[Genre]</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>,
+  <span class="hljs-attr">"result"</span>: [
       {
-          "ISBN": "345379632",
-          "Publisher": "Ballantine Books",
-          "bookAuthor": "Terry Brooks",
-          "bookDesc": "Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit...",
-          "bookGenre1": "Fantasy",
-          "bookGenre2": "Fantasy-UrbanFantasy",
-          "bookGenre3": "Fiction",
-          "bookGenres": "['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']",
-          "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg",
-          "bookPages": "386 pages",
-          "bookRating": 4.05,
-          "bookTitle": "A Knight of the Word",
-          "ratingCount": 14502,
-          "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
-          "yearOfPublication": "1998"
+          <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"345379632"</span>,
+          <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Ballantine Books"</span>,
+          <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Terry Brooks"</span>,
+          <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+          <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>,
+          <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"386 pages"</span>,
+          <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"A Knight of the Word"</span>,
+          <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
       }
-}</code></pre>
-                  </li>
-               </ul>
-               <h3 id="similiarBooks"><span>Similiar Book by Title</span></a></h3>
-               <ul>
-                  <li>
-                     URL
-                     <ul>
-                        <li><code>/similiarBooks/[Title] </code></li>
-                     </ul>
-                  </li>
-                  <li>
-                     Method
-                     <ul>
-                        <li>GET</li>
-                     </ul>
-                  </li>
-                  <li>
-                     Response
-                     <pre v-pre="" data-lang="json"><code class="lang-json">{
-  "error": false,
-  "message": "Books fetched successfully",
-  "result":
+      .... sebanyak banyaknya ....
+    ]
+}
+</code></pre></li>
+</ul>
+<h3 id="similiar-book-by-title">Similiar Book by Title</h3>
+<ul>
+<li>URL<ul>
+<li><code>/similiarBooks/[Title]</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>,
+  <span class="hljs-attr">"result"</span>: [
       {
-          "ISBN": "345379632",
-          "Publisher": "Ballantine Books",
-          "bookAuthor": "Terry Brooks",
-          "bookDesc": "Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit...",
-          "bookGenre1": "Fantasy",
-          "bookGenre2": "Fantasy-UrbanFantasy",
-          "bookGenre3": "Fiction",
-          "bookGenres": "['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']",
-          "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg",
-          "bookPages": "386 pages",
-          "bookRating": 4.05,
-          "bookTitle": "A Knight of the Word",
-          "ratingCount": 14502,
-          "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
-          "yearOfPublication": "1998"
+          <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"345379632"</span>,
+          <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Ballantine Books"</span>,
+          <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Terry Brooks"</span>,
+          <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+          <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>,
+          <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"386 pages"</span>,
+          <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"A Knight of the Word"</span>,
+          <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
       }
-      ...
-}</code></pre>
-                  </li>
-               </ul>
-            </article>
-         </section>
+      ...sebanyak banyaknya...
+    ]
+}
+</code></pre></li>
+</ul>
+<h3 id="top-rating-book-by-genre">Top Rating Book by Genre</h3>
+<ul>
+<li>URL<ul>
+<li><code>/topRatings/[Genre]</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>,
+  <span class="hljs-attr">"result"</span>:[
+      {
+          <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"345379632"</span>,
+          <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Ballantine Books"</span>,
+          <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Terry Brooks"</span>,
+          <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+          <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>,
+          <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"386 pages"</span>,
+          <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"A Knight of the Word"</span>,
+          <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
+      }, 
+      .... sebanyak banyaknya.... 
+    ]
+}
+</code></pre></li>
+</ul>
+<h3 id="get-book-recomendation-for-user">Get Book Recomendation For User</h3>
+<ul>
+<li>URL<ul>
+<li><code>/recomendation</code></li>
+</ul>
+</li>
+<li><p>Method</p>
+<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Parameter</p>
+<ul>
+<li><p><code>token</code> as <code>string</code></p>
+</li>
+<li><p>Example</p>
+<p><a href="https://bangkit-booker-352402.et.r.appspot.com/recomendation?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U">https://bangkit-booker-352402.et.r.appspot.com/recomendation?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U</a></p>
+</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>,
+  <span class="hljs-attr">"result"</span>:[
+      {
+          <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"345379632"</span>,
+          <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Ballantine Books"</span>,
+          <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Terry Brooks"</span>,
+          <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Eight centuries ago the first Knight of the Word was commissioned to combat the demonic evil of the Void. Now that daunting legacy has passed to John Ross - along with powerful magic and the knowledge that his actions are all that stand between a living hell and humanity's future.Then, after decades of service to the Word, an unspeakable act of violence shatters John Ross's weary faith. Haunted by guilt, he turns his back on his dread gift, settling down to build a normal life, untroubled by demons and nightmares.But a fallen Knight makes a tempting prize for the Void, which could bend the Knight's magic to its own evil ends. And once the demons on Ross's trail track him to Seattle, neither he nor anyone close to him will be safe. His only hope is Nest Freemark, a college student who wields an extraordinary magic all her own. Five years earlier, Ross had aided Nest when the future of humanity rested upon her choice between Word and Void. Now Nest must return the favor. She must restore Ross's faith, or his life - and hers - will be forfeit..."</span>,
+          <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Fantasy"</span>,
+          <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Fantasy-UrbanFantasy"</span>,
+          <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>,
+          <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Fantasy', 'Fantasy-UrbanFantasy', 'Fiction', 'ScienceFictionFantasy', 'ScienceFiction', 'Fantasy-Magic', 'Fantasy-EpicFantasy', 'Paranormal-Demons', 'Horror', 'Epic']"</span>,
+          <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403811542l/420496.jpg"</span>,
+          <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"386 pages"</span>,
+          <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.05</span>,
+          <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"A Knight of the Word"</span>,
+          <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">14502</span>,
+          <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word"</span>,
+          <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1998"</span>
+      }
+    .... up to <span class="hljs-number">40</span> books....
+    ]
+}
+</code></pre></li>
+</ul>
+<h3 id="update-buku-yang-dibaca-user">update buku yang dibaca user</h3>
+<ul>
+<li>URL<ul>
+<li><code>/updateReadedBook</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>POST</li>
+</ul>
+</li>
+<li>Request Body<ul>
+<li><code>ISBN</code> as <code>string</code></li>
+<li><code>bookRating</code> as <code>double</code></li>
+</ul>
+</li>
+<li><p>Parameter</p>
+<ul>
+<li><p><code>token</code> as <code>string</code></p>
+</li>
+<li><p>Example</p>
+<p><a href="https://bangkit-booker-352402.et.r.appspot.com/updateReadBook?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U">https://bangkit-booker-352402.et.r.appspot.com/updateReadBook?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U</a></p>
+</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+    <span class="hljs-attr">"error"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Data Updated Succesfuly"</span>,
+    <span class="hljs-attr">"ratedBook"</span>: [
+        {
+            <span class="hljs-attr">"ISBN"</span>: <span class="hljs-string">"394865804"</span>, 
+            <span class="hljs-attr">"Publisher"</span>: <span class="hljs-string">"Random House Children's Books"</span>, 
+            <span class="hljs-attr">"bookAuthor"</span>: <span class="hljs-string">"Dr. Seuss"</span>, 
+            <span class="hljs-attr">"bookDesc"</span>: <span class="hljs-string">"Illus. in full color. \"Dr. Seuss chronicles the feud between the Yooks and the Zooks from slingshots through sophisticated weaponry, until each side has the capacity to destroy the world. The language amuses, the drawings are zesty and humorous, and the demand for this book will be large.\"-- \"School Library Journal.\" \"Provocative, packs an allegorical punch. The parade of increasingly elaborate (and ridiculous) armaments makes a telling point.\"-- \"Booklist.\""</span>, 
+            <span class="hljs-attr">"bookGenre1"</span>: <span class="hljs-string">"Childrens-PictureBooks"</span>, 
+            <span class="hljs-attr">"bookGenre2"</span>: <span class="hljs-string">"Childrens"</span>, 
+            <span class="hljs-attr">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>, 
+            <span class="hljs-attr">"bookGenres"</span>: <span class="hljs-string">"['Childrens-PictureBooks', 'Childrens', 'Fiction', 'Classics', 'Poetry', 'War', 'Fantasy', 'Politics', 'Humor', 'Childrens-Juvenile']"</span>, 
+            <span class="hljs-attr">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388236876l/275325.jpg"</span>, 
+            <span class="hljs-attr">"bookPages"</span>: <span class="hljs-string">"56 pages"</span>, 
+            <span class="hljs-attr">"bookRating"</span>: <span class="hljs-number">4.11</span>, 
+            <span class="hljs-attr">"bookTitle"</span>: <span class="hljs-string">"The Butter Battle Book"</span>, 
+            <span class="hljs-attr">"ratingCount"</span>: <span class="hljs-number">13841.0</span>, 
+            <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/275325.The_Butter_Battle_Book"</span>, 
+            <span class="hljs-attr">"userRating"</span>: <span class="hljs-number">3.0</span>, 
+            <span class="hljs-attr">"yearOfPublication"</span>: <span class="hljs-string">"1984"</span>
+        },
+            ....sebanyak buku yang telah dirating....
+    ]
+}
+</code></pre></li>
+</ul>
+<h3 id="mengambil-buku-yang-dibaca-user">mengambil buku yang dibaca user</h3>
+<ul>
+<li>URL<ul>
+<li><code>/getReadedBooks</code></li>
+</ul>
+</li>
+<li>Method<ul>
+<li>GET</li>
+</ul>
+</li>
+<li><p>Parameter</p>
+<ul>
+<li><p><code>token</code> as <code>string</code></p>
+</li>
+<li><p>Example</p>
+<p><a href="https://bangkit-booker-352402.et.r.appspot.com/getReadBook?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U">https://bangkit-booker-352402.et.r.appspot.com/getReadBook?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoyLCJleHAiOjE2NTU0MzMyNjN9.N1ENZiHGss-W9gnyAIx-Fv6NvuYM-lUtSwNLgapk97U</a></p>
+</li>
+</ul>
+</li>
+<li><p>Response</p>
+<pre><code>{
+  {
+<span class="hljs-string">"error"</span>: <span class="hljs-literal">false</span>, 
+<span class="hljs-string">"message"</span>: <span class="hljs-string">"Books fetched successfully"</span>, 
+<span class="hljs-string">"result"</span>: [
+    {
+    <span class="hljs-string">"ISBN"</span>: <span class="hljs-string">"394865804"</span>, 
+    <span class="hljs-string">"Publisher"</span>: <span class="hljs-string">"Random House Children's Books"</span>, 
+    <span class="hljs-string">"bookAuthor"</span>: <span class="hljs-string">"Dr. Seuss"</span>, 
+    <span class="hljs-string">"bookDesc"</span>: <span class="hljs-string">"Illus. in full color. \"</span>Dr. Seuss chronicles the feud between the Yooks <span class="hljs-built_in">and</span> the Zooks <span class="hljs-keyword">from</span> slingshots through sophisticated weaponry, until each <span class="hljs-built_in">side</span> has the capacity <span class="hljs-keyword">to</span> destroy the world. The <span class="hljs-built_in">language</span> amuses, the drawings are zesty <span class="hljs-built_in">and</span> humorous, <span class="hljs-built_in">and</span> the demand <span class="hljs-keyword">for</span> this book will be large.\<span class="hljs-string">"-- \"</span>School Library Journal.\<span class="hljs-string">" \"</span>Provocative, packs an allegorical punch. The parade of increasingly elaborate (<span class="hljs-built_in">and</span> ridiculous) armaments makes a telling point.\<span class="hljs-string">"-- \"</span>Booklist.\<span class="hljs-string">""</span>, 
+    <span class="hljs-string">"bookGenre1"</span>: <span class="hljs-string">"Childrens-PictureBooks"</span>, 
+    <span class="hljs-string">"bookGenre2"</span>: <span class="hljs-string">"Childrens"</span>, 
+    <span class="hljs-string">"bookGenre3"</span>: <span class="hljs-string">"Fiction"</span>, 
+    <span class="hljs-string">"bookGenres"</span>: <span class="hljs-string">"['Childrens-PictureBooks', 'Childrens', 'Fiction', 'Classics', 'Poetry', 'War', 'Fantasy', 'Politics', 'Humor', 'Childrens-Juvenile']"</span>, 
+    <span class="hljs-string">"bookImage"</span>: <span class="hljs-string">"https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388236876l/275325.jpg"</span>, 
+    <span class="hljs-string">"bookPages"</span>: <span class="hljs-string">"56 pages"</span>, 
+    <span class="hljs-string">"bookRating"</span>: <span class="hljs-number">4.11</span>, 
+    <span class="hljs-string">"bookTitle"</span>: <span class="hljs-string">"The Butter Battle Book"</span>, 
+    <span class="hljs-string">"ratingCount"</span>: <span class="hljs-number">13841.0</span>, 
+    <span class="hljs-string">"url"</span>: <span class="hljs-string">"https://www.goodreads.com/book/show/275325.The_Butter_Battle_Book"</span>, 
+    <span class="hljs-string">"userRating"</span>: <span class="hljs-number">3.0</span>, 
+    <span class="hljs-string">"yearOfPublication"</span>: <span class="hljs-string">"1984"</span>
+    },
+    ....sebanyak buku yang telah dirating....
+}
+</code></pre><p>window.$docsify = { name: &#39;&#39;, repo: &#39;&#39; }</p>
+</li>
+</ul>
+
       </main>
       <script>
          window.$docsify = {
