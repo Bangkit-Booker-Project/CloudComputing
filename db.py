@@ -173,7 +173,7 @@ def booksRecomendation(uID):
     conn = db_connection()
     cursor = conn.cursor()
     bukuRaw= "SELECT bookID FROM ratingDataset WHERE userID=%s"
-    print(bukuRaw)
+    # print(bukuRaw)
     cursor.execute(bukuRaw,(uID,))
     bukuRaw = cursor.fetchall()
     books_have_been_read_by_user = []
@@ -218,6 +218,11 @@ def getbuk(ISBN):
     getBook = getBook.iloc[0]
     return getBook
 
+def getISBN(books):
+    getISBN = book_data[book_data.books.isin([books])]['ISBN']
+    getISBN = getISBN.iloc[0]
+    return getISBN
+
 def updateRatingsTable(userId,ISBN,bookRating):
     conn = db_connection()
     cursor = conn.cursor()
@@ -228,7 +233,8 @@ def updateRatingsTable(userId,ISBN,bookRating):
         ISBN = getbuk(ISBN)
         cursor.execute(sql_Querry,(userId,ISBN,bookRating))
         conn.commit()
-        buku = getRecomendationBooks(userId)
+        buku = getRatedBooks(userId)
+        # buku = getRecomendationBooks(userId)
         # for r in rows:
         #     user = r
         return buku
@@ -236,6 +242,30 @@ def updateRatingsTable(userId,ISBN,bookRating):
         # print(e)
         return False
 
+def getRatedBooks(uID):
+    conn = db_connection()
+    cursor = conn.cursor()
+    bukuRaw= "SELECT * FROM ratingDataset WHERE userID=%s"
+    # print(bukuRaw)
+    
+    bukus = []
+    book = None
+    try :
+        cursor.execute(bukuRaw,(uID,))
+        ratedData = cursor.fetchall()
+    except:
+         return False
+
+    for r in ratedData:
+        book = r
+        ISBN = book['bookID']
+        ISBN = getISBN(ISBN)
+        dictBook = {
+            "ISBN" : ISBN,
+            "bookRating" : book['bookRating']
+            }
+        bukus.append(dictBook)
+    return bukus
 
 def regsisterUser(email,password, username):
     # konek = dbKonek()

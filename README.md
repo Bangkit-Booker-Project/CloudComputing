@@ -309,7 +309,7 @@ Bangkit Booker
 ### update buku yang dirating user
 
 *   URL
-    *   `/recomendation`
+    *   `/updateReadBook`
 *   Method
     *   POST
 *   Request Body

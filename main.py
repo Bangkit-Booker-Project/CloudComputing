@@ -6,7 +6,7 @@ import db
 import hashlib
 import string    
 import random # define the random module 
-import tensorflow as tf
+# import tensorflow as tf
 
 
 app = Flask(__name__)
@@ -14,10 +14,10 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 # app = Flask(__name__, static_folder="your path to static")
 
 
-model = None
-def load_model():
-    global model
-    model = tf.keras.models.load_model('my_model')
+# model = None
+# def load_model():
+#     global model
+#     model = tf.keras.models.load_model('my_model')
     
 # validasi token untuk user login
 app.config['SECRET_KEY'] = "thisisthesecretkey"
@@ -135,6 +135,22 @@ def recomendation():
         res["message"] = "No book recomendation for user {}".format(id)
         return jsonify(res), 400
 
+@app.route('/getRatedBooks', methods=['GET'])
+@tokenRequired
+def getReadBooks():
+    res = respon
+    uId = dataJWT["user"]
+    books = db.getRatedBooks(uId)
+    if books:
+        res["error"] = False
+        res["message"] = "Similiar books fetched successfully"
+        res['result'] = books
+        return jsonify(res), 200
+    else:
+        res["error"] = True
+        res["message"] = "User Not Rated any Books"
+        return jsonify(res), 400
+
 # API untuk reset password
 @app.route('/updateReadBook', methods=['POST'])
 @tokenRequired
@@ -146,12 +162,13 @@ def updateReadBook():
     isbn = req.form['ISBN']
     rating = req.form['bookRating']
     # uName = auth.form['username']
+    userD = True
     userD = db.updateRatingsTable(uId,isbn,rating)
 
     if userD:  
         res["error"] = False
         res["message"] ="Data Updated Succesfuly"
-        res['book recomendation'] = userD
+        res['ratedBook'] = userD
         return jsonify(res), 200
     else:
         res["error"] = True
@@ -282,5 +299,5 @@ def resetPassword():
 
 
 if __name__ == '__main__':
-    load_model()
+    # load_model()
     app.run(debug=True)

@@ -1,22 +1,13 @@
 #app.yaml
-runtime: python
-threadsafe: yes
-env: flex
+runtime: python37
+env: standard
 
-resources:
-  cpu: 1
-  memory_gb: 2
-  disk_size_gb: 20
-
-runtime_config:
-    python_version: 3
-# entrypoint: gunicorn -b :$PORT main:app
 
 
 env_variables:
   CLOUD_SQL_USERNAME: booker
   CLOUD_SQL_PASSWORD: booker2022
   CLOUD_SQL_DATABASE_NAME: bookerDB
-  CLOUD_SQL_CONNECTION_NAME: bangkit-booker-352402:asia-southeast2:bangkit-booker
-  CLOUD_SQL_HOST_NAME: 34.101.56.220
+  CLOUD_SQL_CONNECTION_NAME: bangkit-booker-352402:asia-southeast2:booker-bangkit2022
+  CLOUD_SQL_HOST_NAME: 34.128.101.174
 
