@@ -131,7 +131,8 @@ Bangkit Booker
                 "ratingCount": 450266,
                 "url": "https://www.goodreads.com/book/show/14497.Neverwhere",
                 "yearOfPublication": "1998"
-            }
+            },
+            ....sebanyak banyaknya....
           ]
         }
     
@@ -179,7 +180,7 @@ Bangkit Booker
         {
           "error": false,
           "message": "Books fetched successfully",
-          "result":
+          "result": [
               {
                   "ISBN": "345379632",
                   "Publisher": "Ballantine Books",
@@ -197,6 +198,8 @@ Bangkit Booker
                   "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
                   "yearOfPublication": "1998"
               }
+              .... sebanyak banyaknya ....
+            ]
         }
 
 
@@ -211,7 +214,7 @@ Bangkit Booker
         {
           "error": false,
           "message": "Books fetched successfully",
-          "result":
+          "result": [
               {
                   "ISBN": "345379632",
                   "Publisher": "Ballantine Books",
@@ -229,7 +232,8 @@ Bangkit Booker
                   "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
                   "yearOfPublication": "1998"
               }
-              ...
+              ...sebanyak banyaknya...
+            ]
         }
     
 ### Top Rating Book by Genre
@@ -243,7 +247,7 @@ Bangkit Booker
         {
           "error": false,
           "message": "Books fetched successfully",
-          "result":
+          "result":[
               {
                   "ISBN": "345379632",
                   "Publisher": "Ballantine Books",
@@ -260,7 +264,9 @@ Bangkit Booker
                   "ratingCount": 14502,
                   "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
                   "yearOfPublication": "1998"
-              }
+              }, 
+              .... sebanyak banyaknya.... 
+            ]
         }
 
 ### Get Book Recomendation For User
@@ -301,7 +307,7 @@ Bangkit Booker
                   "url": "https://www.goodreads.com/book/show/420496.A_Knight_of_the_Word",
                   "yearOfPublication": "1998"
               }
-            .... up to 50 book....
+            .... up to 40 books....
             ]
         }
     
@@ -326,29 +332,28 @@ Bangkit Booker
 *   Response
 
         {
-          "error": false,
-            "message": "Reads Books Updated Succesfuly",
-            "readedBook": [
+            "error": false,
+            "message": "Data Updated Succesfuly",
+            "ratedBook": [
                 {
-                "ISBN": "394865804",
-                "bookRating": 3
+                    "ISBN": "394865804", 
+                    "Publisher": "Random House Children's Books", 
+                    "bookAuthor": "Dr. Seuss", 
+                    "bookDesc": "Illus. in full color. \"Dr. Seuss chronicles the feud between the Yooks and the Zooks from slingshots through sophisticated weaponry, until each side has the capacity to destroy the world. The language amuses, the drawings are zesty and humorous, and the demand for this book will be large.\"-- \"School Library Journal.\" \"Provocative, packs an allegorical punch. The parade of increasingly elaborate (and ridiculous) armaments makes a telling point.\"-- \"Booklist.\"", 
+                    "bookGenre1": "Childrens-PictureBooks", 
+                    "bookGenre2": "Childrens", 
+                    "bookGenre3": "Fiction", 
+                    "bookGenres": "['Childrens-PictureBooks', 'Childrens', 'Fiction', 'Classics', 'Poetry', 'War', 'Fantasy', 'Politics', 'Humor', 'Childrens-Juvenile']", 
+                    "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388236876l/275325.jpg", 
+                    "bookPages": "56 pages", 
+                    "bookRating": 4.11, 
+                    "bookTitle": "The Butter Battle Book", 
+                    "ratingCount": 13841.0, 
+                    "url": "https://www.goodreads.com/book/show/275325.The_Butter_Battle_Book", 
+                    "userRating": 3.0, 
+                    "yearOfPublication": "1984"
                 },
-                {
-                "ISBN": "670451495",
-                "bookRating": 3
-                },
-                {
-                "ISBN": "688128971",
-                "bookRating": 3
-                },
-                {
-                "ISBN": "60809833",
-                "bookRating": 3
-                },
-                {
-                "ISBN": "3257208626",
-                "bookRating": 3.1
-                }
+                    ....sebanyak buku yang telah dirating....
             ]
         }
 
@@ -369,15 +374,28 @@ Bangkit Booker
 *   Response
 
         {
-          "error": false,
-            "message": "Read Books Fetched Succesfuly",
-            "readedBook": [
-                {
-                "ISBN": "394865804",
-                "bookRating": 3
-                "bookTitle" : Random House Children's Books
-                },
-                ...
-            ]
+          {
+        "error": false, 
+        "message": "Books fetched successfully", 
+        "result": [
+            {
+            "ISBN": "394865804", 
+            "Publisher": "Random House Children's Books", 
+            "bookAuthor": "Dr. Seuss", 
+            "bookDesc": "Illus. in full color. \"Dr. Seuss chronicles the feud between the Yooks and the Zooks from slingshots through sophisticated weaponry, until each side has the capacity to destroy the world. The language amuses, the drawings are zesty and humorous, and the demand for this book will be large.\"-- \"School Library Journal.\" \"Provocative, packs an allegorical punch. The parade of increasingly elaborate (and ridiculous) armaments makes a telling point.\"-- \"Booklist.\"", 
+            "bookGenre1": "Childrens-PictureBooks", 
+            "bookGenre2": "Childrens", 
+            "bookGenre3": "Fiction", 
+            "bookGenres": "['Childrens-PictureBooks', 'Childrens', 'Fiction', 'Classics', 'Poetry', 'War', 'Fantasy', 'Politics', 'Humor', 'Childrens-Juvenile']", 
+            "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388236876l/275325.jpg", 
+            "bookPages": "56 pages", 
+            "bookRating": 4.11, 
+            "bookTitle": "The Butter Battle Book", 
+            "ratingCount": 13841.0, 
+            "url": "https://www.goodreads.com/book/show/275325.The_Butter_Battle_Book", 
+            "userRating": 3.0, 
+            "yearOfPublication": "1984"
+            },
+            ....sebanyak buku yang telah dirating....
         }
 window.$docsify = { name: '', repo: '' }

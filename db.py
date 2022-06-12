@@ -260,11 +260,12 @@ def getRatedBooks(uID):
 
     for r in ratedData:
         bukuIns = r
-        ISBN = bukuIns['bookID']
-        ISBNr = getISBN(ISBN)
-        title = book_data[book_data.ISBN.isin([ISBNr])]['bookTitle']
+        bookID = bukuIns['bookID']
+        userRating = bukuIns['bookRating']
+        ISBN = getISBN(bookID)
+        title = book_data[book_data.ISBN.isin([ISBN])]['bookTitle']
         # getDbuku = book_data[book_data.ISBN.isin([ISBNr])][['bookTitle'','ISBN','url','bookAuthor','yearOfPublication','bookImage','bookPages','Publisher','bookDesc','bookGenre1','bookGenre2','bookGenre3']]'
-        title = title.iloc[0][0]
+        title = title.iloc[0]
         # dictBook = {
         #     "bookTitle" : book[0],
         #     "userBookRating" : bukuIns['bookRating'],
@@ -281,6 +282,7 @@ def getRatedBooks(uID):
         #     "bookGenre3" : book[11]
         # }
         dictBook = getOneBook(title)
+        dictBook['userRating']=userRating
         bukus.append(dictBook)
     return bukus
 

@@ -2,8 +2,8 @@ from webbrowser import get
 import pandas as pd
 book_data = pd.read_csv('book_dataset.csv')
 def getISBN(books):
-    getISBN = book_data[book_data.books.isin([books])][['bookTitle','ISBN','url','bookAuthor','yearOfPublication','bookImage','bookPages','Publisher','bookDesc','bookGenre1','bookGenre2','bookGenre3']]
-    getISBN = getISBN.iloc[0][0]
+    getISBN = book_data[book_data.books.isin([books])]['bookTitle']
+    getISBN = getISBN.iloc[0]
     return getISBN
 book = getISBN(4)
 # dictBook = {
