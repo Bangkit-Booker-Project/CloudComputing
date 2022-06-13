@@ -230,12 +230,17 @@ def cekIsiRating(userId,ISBN):
     conn = db_connection()
     cursor = conn.cursor()
     selectQuery = ("SELECT * FROM ratingDataset WHERE userID=%s AND bookID=%s")
+    buku = False
     try:
         cursor.execute(selectQuery,(userId,ISBN))
-        buku = cursor.fetchall()
+        if not cursor.rowcount:
+            return buku
         return True
     except:
-        return False
+        return buku
+
+
+
 
 def updateRatingsTable(userId,ISBN,bookRating):
     conn = db_connection()
@@ -245,7 +250,7 @@ def updateRatingsTable(userId,ISBN,bookRating):
     insertQuery = ("INSERT INTO ratingDataset (userID,bookID,bookRating) VALUES (%s, %s, %s)")
     ISBN = getbuk(ISBN)
     # user = []
-    if cekIsiRating(userId,ISBN):
+    if cekIsiRating(userId,ISBN) is not False:
         cursor.execute(updateQuery,(bookRating,userId,ISBN))
         conn.commit()
         buku = getRatedBooks(userId)
